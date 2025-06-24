@@ -1,5 +1,17 @@
-import { useLoaderData } from "react-router";
-import { Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import {
+  useLoaderData,
+  useNavigate,
+  type LoaderFunctionArgs,
+} from "react-router";
+import {
+  Card,
+  Group,
+  Pagination,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 
 type Monster = {
   slug: string;
@@ -24,22 +36,35 @@ export function meta() {
   ];
 }
 
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const page = Number(url.searchParams.get("page")) || 1;
+  const pageLimit = 20;
+
   const response = await fetch(
-    "https://api.open5e.com/monsters/?document__slug=wotc-srd&limit=400"
+    `https://api.open5e.com/monsters/?document__slug=wotc-srd&limit=${pageLimit}&page=${page}`
   );
 
-  const { results: monsters } = (await response.json()) as Open5eResponse;
+  const { count: monstersCount, results: monsters } =
+    (await response.json()) as Open5eResponse;
 
-  return { monsters };
+  const pageCount = Math.ceil(monstersCount / pageLimit);
+
+  return { monstersCount, monsters, page, pageCount };
 }
 
 export default function MonstersIndex() {
-  const { monsters } = useLoaderData<typeof loader>();
+  const { monstersCount, monsters, page, pageCount } =
+    useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
+  const handlePageChange = (newPage: number) => {
+    navigate(`/monsters?page=${newPage}`);
+  };
 
   return (
     <Stack>
-      <Title order={1}>Monsters</Title>
+      <Title order={1}>Monsters ({monstersCount})</Title>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
         {monsters.map((monster) => (
           <Card
@@ -57,6 +82,7 @@ export default function MonstersIndex() {
           </Card>
         ))}
       </SimpleGrid>
+      <Pagination total={pageCount} value={page} onChange={handlePageChange} />
     </Stack>
   );
 }
