@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import { Stack, Text, Title } from "@mantine/core";
+import { Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 
 type Monster = {
   slug: string;
@@ -39,15 +39,24 @@ export default function MonstersIndex() {
 
   return (
     <Stack>
-      <Title>Monsters</Title>
-      <Stack>
+      <Title order={1}>Monsters</Title>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
         {monsters.map((monster) => (
-          <Stack key={monster.slug}>
-            <Title>{monster.name}</Title>
-            <Text>{monster.challenge_rating}</Text>
-          </Stack>
+          <Card
+            key={monster.slug}
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+          >
+            <Title order={2}>{monster.name}</Title>
+            <Group>
+              <Text>Challenge rating:</Text>
+              <Text>{monster.challenge_rating}</Text>
+            </Group>
+          </Card>
         ))}
-      </Stack>
+      </SimpleGrid>
     </Stack>
   );
 }
