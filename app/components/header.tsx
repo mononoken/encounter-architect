@@ -20,7 +20,14 @@ export function Header() {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <Anchor component={Link} to="/">
+        <Anchor
+          component={Link}
+          to="/"
+          variant="gradient"
+          gradient={{ from: "blue", to: "purple" }}
+          fw={800}
+          fz="lg"
+        >
           Encounter Architect
         </Anchor>
         <Group gap={5} visibleFrom="xs">
