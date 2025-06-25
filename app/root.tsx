@@ -5,12 +5,15 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router";
 import "@mantine/core/styles.css";
 
 import type { Route } from "./+types/root";
 import {
+  Box,
   ColorSchemeScript,
+  LoadingOverlay,
   mantineHtmlProps,
   MantineProvider,
 } from "@mantine/core";
@@ -30,6 +33,9 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+
   return (
     <html lang="en" {...mantineHtmlProps}>
       <head>
@@ -42,7 +48,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <MantineProvider>
           <Header />
-          {children}
+          <Box style={{ position: "relative" }}>
+            <LoadingOverlay
+              visible={isLoading}
+              zIndex={1000}
+              overlayProps={{ radius: "sm", blur: 2 }}
+            />
+            {children}
+          </Box>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />
