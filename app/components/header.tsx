@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router";
-import { Anchor, Container, Group } from "@mantine/core";
+import { ActionIcon, Anchor, Button, Container, Group } from "@mantine/core";
 import classes from "../styles/Header.module.css";
+import { IconBrandGithub } from "@tabler/icons-react";
 
 const links = [{ link: "/monsters", label: "Monsters" }];
 
@@ -30,8 +31,16 @@ export function Header() {
         >
           Encounter Architect
         </Anchor>
-        <Group gap={5} visibleFrom="xs">
+        <Group gap="md" visibleFrom="xs">
           {items}
+          <ActionIcon
+            component="a"
+            href="https://github.com/mononoken/encounter-architect"
+            variant="outline"
+            color="black"
+          >
+            <IconBrandGithub />
+          </ActionIcon>
         </Group>
       </Container>
     </header>

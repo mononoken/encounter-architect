@@ -1,4 +1,5 @@
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
+import { IconBrandGithub } from "@tabler/icons-react";
 import { Link } from "react-router";
 
 export function meta() {
@@ -32,6 +33,7 @@ export default function Home() {
           target="_blank"
           variant="default"
           size="md"
+          rightSection={<IconBrandGithub />}
         >
           GitHub
         </Button>
