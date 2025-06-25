@@ -112,7 +112,13 @@ export default function MonstersIndex() {
           </Card>
         ))}
       </SimpleGrid>
-      <Pagination total={pageCount} value={page} onChange={handlePageChange} />
+      <Group justify="center">
+        <Pagination
+          total={pageCount}
+          value={page}
+          onChange={handlePageChange}
+        />
+      </Group>
     </Stack>
   );
 }
