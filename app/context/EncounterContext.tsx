@@ -1,3 +1,4 @@
+import { notifications } from "@mantine/notifications";
 import {
   createContext,
   useContext,
@@ -110,11 +111,18 @@ export function EncounterProvider({ children }: { children: React.ReactNode }) {
   const addMonster = useCallback(
     (monsterToAdd: Monster) => {
       setMonsters((prevMonsters) => {
+        const notificationMessage = `${monsterToAdd.name} added to encounter.`;
+
         const existingMonsterIndex = prevMonsters.findIndex(
           (prevMonster) => prevMonster.slug === monsterToAdd.slug
         );
 
         if (existingMonsterIndex === -1) {
+          notifications.show({
+            title: "Encounter Updated",
+            message: notificationMessage,
+          });
+
           return [...prevMonsters, { ...monsterToAdd, quantity: 1 }];
         }
 
@@ -123,6 +131,12 @@ export function EncounterProvider({ children }: { children: React.ReactNode }) {
           ...updatedMonsters[existingMonsterIndex],
           quantity: updatedMonsters[existingMonsterIndex].quantity + 1,
         };
+
+        notifications.show({
+          title: "Encounter Updated",
+          message: notificationMessage,
+        });
+
         return updatedMonsters;
       });
     },

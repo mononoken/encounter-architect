@@ -8,6 +8,7 @@ import {
   useNavigation,
 } from "react-router";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 import type { Route } from "./+types/root";
 import {
@@ -17,8 +18,9 @@ import {
   mantineHtmlProps,
   MantineProvider,
 } from "@mantine/core";
-import { Header } from "./components/Header";
-import { EncounterProvider } from "./context/EncounterContext";
+import { Header } from "~/components/Header";
+import { EncounterProvider } from "~/context/EncounterContext";
+import { Notifications } from "@mantine/notifications";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,6 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <MantineProvider>
+          <Notifications />
           <Header />
           <Box style={{ position: "relative" }} px="lg" pb="xl">
             <LoadingOverlay
