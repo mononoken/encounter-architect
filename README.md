@@ -5,6 +5,7 @@ Build Dungeons & Dragons 5e encounters.
 ## Features
 
 - Browse monster library provided by [Open5e](https://open5e.com/)
+- Filter monsters by challenge rating
 - Build encounters with calculated total encounter XP
 
 ## Local Deploy
