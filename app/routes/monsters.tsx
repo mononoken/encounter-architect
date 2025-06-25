@@ -9,6 +9,7 @@ import {
   Card,
   Group,
   Pagination,
+  Select,
   SimpleGrid,
   Skeleton,
   Stack,
@@ -26,14 +27,63 @@ type Open5eResponse = {
   results: Monster[];
 };
 
+const VALID_CRS = [
+  "0",
+  "1/8",
+  "1/4",
+  "1/2",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+  "29",
+  "30",
+];
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;
+  const cr = url.searchParams.get("cr");
   const pageLimit = 20;
 
   // https://open5e.com/api-docs
+  const queryParams = new URLSearchParams({
+    document__slug: "wotc-srd",
+    limit: String(pageLimit),
+    page: String(page),
+    ordering: "challenge_rating",
+  });
+
+  if (cr) {
+    queryParams.append("cr", cr);
+  }
+
   const response = await fetch(
-    `https://api.open5e.com/monsters/?document__slug=wotc-srd&ordering=challenge_rating&limit=${pageLimit}&page=${page}`
+    `https://api.open5e.com/monsters/?${queryParams}`
   );
 
   const { count: monstersCount, results: monsters } =
@@ -41,7 +91,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const pageCount = Math.ceil(monstersCount / pageLimit);
 
-  return { monstersCount, monsters, page, pageCount };
+  return { monstersCount, monsters, page, pageCount, cr };
 }
 
 function PendingMonstersIndex() {
@@ -67,7 +117,7 @@ function PendingMonstersIndex() {
 }
 
 export default function MonstersIndex() {
-  const { monstersCount, monsters, page, pageCount } =
+  const { monstersCount, monsters, page, pageCount, cr } =
     useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -76,14 +126,38 @@ export default function MonstersIndex() {
   const isLoading = navigation.state === "loading";
 
   const handlePageChange = (newPage: number) => {
-    navigate(`/monsters?page=${newPage}`);
+    const searchParams = new URLSearchParams();
+    searchParams.set("page", String(newPage));
+    if (cr) {
+      searchParams.set("cr", cr);
+    }
+    navigate(`/monsters?${searchParams}`);
+  };
+
+  const handleCrChange = (newCr: string | null) => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("page", "1");
+    if (newCr) {
+      searchParams.set("cr", newCr);
+    }
+    navigate(`/monsters?${searchParams}`);
   };
 
   return isLoading ? (
     <PendingMonstersIndex />
   ) : (
     <Stack>
-      <Title order={1}>Monsters ({monstersCount})</Title>
+      <Group>
+        <Title order={1}>Monsters ({monstersCount})</Title>
+        <Select
+          label="Challenge Rating"
+          placeholder="Pick Value"
+          data={VALID_CRS}
+          value={cr}
+          onChange={handleCrChange}
+          clearable
+        />
+      </Group>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
         {monsters.map((monster) => (
           <Card
