@@ -1,6 +1,7 @@
 import {
   useLoaderData,
   useNavigate,
+  useNavigation,
   type LoaderFunctionArgs,
 } from "react-router";
 import {
@@ -8,6 +9,7 @@ import {
   Group,
   Pagination,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   Title,
@@ -53,16 +55,41 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { monstersCount, monsters, page, pageCount };
 }
 
+function PendingMonstersIndex() {
+  return (
+    <Stack>
+      <Title order={1}>Monsters</Title>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
+        {Array.from({ length: 20 }).map((_, index) => (
+          <Card key={index} shadow="sm" padding="lg" radius="md" withBorder>
+            <Stack>
+              <Skeleton height={35} />
+              <Group>
+                <Skeleton height={24} />
+              </Group>
+            </Stack>
+          </Card>
+        ))}
+      </SimpleGrid>
+    </Stack>
+  );
+}
+
 export default function MonstersIndex() {
   const { monstersCount, monsters, page, pageCount } =
     useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+
+  const isLoading = navigation.state === "loading";
 
   const handlePageChange = (newPage: number) => {
     navigate(`/monsters?page=${newPage}`);
   };
 
-  return (
+  return isLoading ? (
+    <PendingMonstersIndex />
+  ) : (
     <Stack>
       <Title order={1}>Monsters ({monstersCount})</Title>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
@@ -74,11 +101,13 @@ export default function MonstersIndex() {
             radius="md"
             withBorder
           >
-            <Title order={2}>{monster.name}</Title>
-            <Group>
-              <Text>Challenge rating:</Text>
-              <Text>{monster.challenge_rating}</Text>
-            </Group>
+            <Stack>
+              <Title order={2}>{monster.name}</Title>
+              <Group>
+                <Text>Challenge rating:</Text>
+                <Text>{monster.challenge_rating}</Text>
+              </Group>
+            </Stack>
           </Card>
         ))}
       </SimpleGrid>
