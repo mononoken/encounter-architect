@@ -14,7 +14,7 @@ export default function Home() {
         encounters for their campaigns, powered by data from the Open5e API.
       </Text>
       <Group mt="xl">
-        <Button component={Link} to="/monsters" size="md">
+        <Button component={Link} to="/encounter" size="md">
           Get started
         </Button>
         <Button
