@@ -13,16 +13,6 @@ import {
 import { IconTrash } from "@tabler/icons-react";
 import { useEncounter } from "../context/EncounterContext";
 
-export function meta() {
-  return [
-    { title: "Encounter Builder - Encounter Architect" },
-    {
-      name: "description",
-      content: "Build and balance encounters for your D&D 5e campaigns.",
-    },
-  ];
-}
-
 export async function loader() {
   return {};
 }

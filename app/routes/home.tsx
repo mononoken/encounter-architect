@@ -2,16 +2,6 @@ import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { Link } from "react-router";
 
-export function meta() {
-  return [
-    { title: "Encounter Architect" },
-    {
-      name: "description",
-      content: "Build encounters for role-playing games using 5e ruleset.",
-    },
-  ];
-}
-
 export default function Home() {
   return (
     <Stack align="center" ta="center" maw={700} mx="auto" mt="xl">

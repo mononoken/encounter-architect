@@ -26,16 +26,6 @@ type Open5eResponse = {
   results: Monster[];
 };
 
-export function meta() {
-  return [
-    { title: "Encounter Architect" },
-    {
-      name: "description",
-      content: "Build encounters for role-playing games using 5e ruleset.",
-    },
-  ];
-}
-
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;

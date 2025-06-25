@@ -22,6 +22,16 @@ import { Header } from "~/components/Header";
 import { EncounterProvider } from "~/context/EncounterContext";
 import { Notifications } from "@mantine/notifications";
 
+export function meta() {
+  return [
+    { title: "Encounter Architect" },
+    {
+      name: "description",
+      content: "Build encounters for role-playing games using 5e ruleset.",
+    },
+  ];
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
