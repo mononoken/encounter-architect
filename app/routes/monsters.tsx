@@ -43,8 +43,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const page = Number(url.searchParams.get("page")) || 1;
   const pageLimit = 20;
 
+  // https://open5e.com/api-docs
   const response = await fetch(
-    `https://api.open5e.com/monsters/?document__slug=wotc-srd&limit=${pageLimit}&page=${page}`
+    `https://api.open5e.com/monsters/?document__slug=wotc-srd&ordering=challenge_rating&limit=${pageLimit}&page=${page}`
   );
 
   const { count: monstersCount, results: monsters } =
