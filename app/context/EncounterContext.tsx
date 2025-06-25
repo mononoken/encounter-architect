@@ -99,10 +99,6 @@ function getXpMultiplier(monsterCount: number) {
 }
 
 export function EncounterProvider({ children }: { children: React.ReactNode }) {
-  // const [playerLevel, setPlayerLevel] = useLocalStorageState<number | null>(
-  //   "playerLevel",
-  //   null
-  // );
   const [monsters, setMonsters] = useLocalStorageState<MonsterInEncounter[]>(
     "encounterMonsters",
     []
@@ -207,8 +203,6 @@ export function EncounterProvider({ children }: { children: React.ReactNode }) {
     <EncounterContext.Provider
       value={useMemo(
         () => ({
-          // playerLevel,
-          // setPlayerLevel,
           monsters,
           addMonster,
           removeMonster,
@@ -217,8 +211,6 @@ export function EncounterProvider({ children }: { children: React.ReactNode }) {
           totalEncounterXp,
         }),
         [
-          // playerLevel,
-          // setPlayerLevel,
           monsters,
           addMonster,
           removeMonster,
