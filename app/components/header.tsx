@@ -2,10 +2,7 @@ import { Link, NavLink } from "react-router";
 import { Anchor, Container, Group } from "@mantine/core";
 import classes from "../styles/Header.module.css";
 
-const links = [
-  { link: "/about", label: "About" },
-  { link: "/monsters", label: "Monsters" },
-];
+const links = [{ link: "/monsters", label: "Monsters" }];
 
 export function Header() {
   const items = links.map((link) => (

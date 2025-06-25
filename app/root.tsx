@@ -48,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <MantineProvider>
           <Header />
-          <Box style={{ position: "relative" }}>
+          <Box style={{ position: "relative" }} px="lg" pb="xl">
             <LoadingOverlay
               visible={isLoading}
               zIndex={1000}
