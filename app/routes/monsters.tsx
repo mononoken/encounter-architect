@@ -5,6 +5,7 @@ import {
   type LoaderFunctionArgs,
 } from "react-router";
 import {
+  ActionIcon,
   Card,
   Group,
   Pagination,
@@ -14,12 +15,9 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-
-type Monster = {
-  slug: string;
-  name: string;
-  challenge_rating: number;
-};
+import { useEncounter } from "~/context/EncounterContext";
+import { IconPlus } from "@tabler/icons-react";
+import type { Monster } from "~/types";
 
 type Open5eResponse = {
   count: number;
@@ -59,7 +57,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 function PendingMonstersIndex() {
   return (
     <Stack>
-      <Title order={1}>Monsters</Title>
+      <Title order={1} mb="lg">
+        Monsters
+      </Title>
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
         {Array.from({ length: 20 }).map((_, index) => (
           <Card key={index} shadow="sm" padding="lg" radius="md" withBorder>
@@ -81,6 +81,7 @@ export default function MonstersIndex() {
     useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const { addMonster } = useEncounter();
 
   const isLoading = navigation.state === "loading";
 
@@ -103,7 +104,17 @@ export default function MonstersIndex() {
             withBorder
           >
             <Stack>
-              <Title order={2}>{monster.name}</Title>
+              <Group justify="space-between" align="center">
+                <Title order={2}>{monster.name}</Title>
+                <ActionIcon
+                  variant="default"
+                  size="md"
+                  aria-label="Add to encounter"
+                  onClick={() => addMonster(monster)}
+                >
+                  <IconPlus />
+                </ActionIcon>
+              </Group>
               <Group>
                 <Text>Challenge rating:</Text>
                 <Text>{monster.challenge_rating}</Text>

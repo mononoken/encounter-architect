@@ -1,9 +1,12 @@
 import { Link } from "react-router";
 import { ActionIcon, Anchor, Container, Group } from "@mantine/core";
 import { IconBrandGithub } from "@tabler/icons-react";
-import classes from "../styles/Header.module.css";
+import classes from "./Header.module.css";
 
-const links = [{ link: "/monsters", label: "Monsters" }];
+const links = [
+  { link: "/monsters", label: "Monsters" },
+  { link: "/encounter", label: "Encounter" },
+];
 
 export function Header() {
   const items = links.map((link) => (
